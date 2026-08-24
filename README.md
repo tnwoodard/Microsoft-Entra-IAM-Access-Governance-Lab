@@ -205,7 +205,7 @@ The lab was designed around the principle that payroll access should reflect bus
 | Single point of failure | Business continuity | Primary and backup payroll approvers were established |
 | Excessive application access | RBAC | Payroll User and Payroll Approver application roles were assigned through separate security groups |
 | Standing privileged access | PIM / JIT access | Payroll approvers were maintained as eligible rather than permanently active members |
-| Unauthorized privilege activation | MFA and business justification | PIM activation requires additional authentication and a documented business reason |
+| Unjustified privilege activation | Business justification | PIM activation requires the requester to document the business need |
 | Self-approval of privileged access | Separation of duties | Payroll approver activation requires independent approval |
 | Excessive activation duration | Time-bound access | Privileged membership is activated only for a limited period |
 | Stale privileged eligibility | Access reviews | Payroll approver eligibility is reviewed semi-annually |
@@ -299,7 +299,6 @@ The lab intentionally focused on a small number of identities so that the comple
 - Separation of duties
 - Enterprise application role assignment
 - Security group administration
-- Multi-Factor Authentication (MFA)
 - Privileged access approval workflows
 - Access reviews and access recertification
 - Identity governance
