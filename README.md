@@ -248,3 +248,70 @@ The completed design applies controls throughout the privileged access lifecycle
 `Assign Eligibility → Review Continued Need → Request Activation → Authenticate → Justify → Independently Approve → Activate Temporarily → Audit → Automatically Remove`
 
 This provides controls both over **who is authorized for privileged payroll access** and **when that privilege may actually be exercised**.
+
+## Results
+
+The redesigned payroll access model addressed both the original business-continuity problem and the associated privileged-access risks.
+
+The completed solution achieved the following outcomes:
+
+- Established separate Payroll User and Payroll Approver roles
+- Replaced direct standing payroll approval access with PIM-managed eligibility
+- Established primary and backup payroll approvers
+- Required time-limited activation for privileged payroll access
+- Required business justification for privileged activation
+- Required independent authorization of privileged activation requests
+- Verified automatic removal of temporary privileged access
+- Separated standard payroll users from privileged payroll approvers
+- Implemented semi-annual recertification of payroll approver eligibility
+- Required documented justification for access-review decisions
+- Validated the privileged access lifecycle through PIM audit records
+
+The resulting model preserves payroll availability without requiring permanent privileged access for multiple employees.
+
+## Limitations & Production Considerations
+
+This project was implemented in a lab tenant using fictional identities and a simulated payroll enterprise application. The focus was identity architecture and access governance rather than application functionality.
+
+In a production environment, additional considerations would include:
+
+- Integration with a production payroll application that enforces application roles
+- Assignment of narrowly scoped administrative roles instead of relying on Global Administrator for lab administration
+- Emergency or break-glass access procedures
+- Formal joiner, mover, and leaver processes
+- Integration with authoritative HR identity data
+- Conditional Access policies based on organizational risk requirements
+- Defined escalation procedures for incomplete access reviews
+- Centralized monitoring and alerting for privileged identity events
+- Documented ownership for groups, applications, access reviews, and privileged roles
+- Periodic testing of backup approver readiness and business-continuity procedures
+
+The lab intentionally focused on a small number of identities so that the complete privileged-access lifecycle could be configured, tested, and documented end to end.
+
+## Skills Demonstrated
+
+- Microsoft Entra ID administration
+- Identity and Access Management (IAM)
+- Role-Based Access Control (RBAC)
+- Microsoft Entra Privileged Identity Management (PIM)
+- Just-in-Time (JIT) privileged access
+- Least-privilege design
+- Separation of duties
+- Enterprise application role assignment
+- Security group administration
+- Multi-Factor Authentication (MFA)
+- Privileged access approval workflows
+- Access reviews and access recertification
+- Identity governance
+- Audit-log analysis
+- Business-continuity planning
+- Security control validation
+- Technical documentation
+
+## Key Takeaways
+
+This project reinforced that IAM is not simply the assignment of permissions. Effective access governance requires controls over the full access lifecycle, including who is eligible for access, when elevated access becomes active, who authorizes it, how long it remains active, whether the underlying business need still exists, and whether those decisions can be audited.
+
+The backup payroll approver scenario also demonstrated the importance of combining identity telemetry with business context. Inactivity can be a useful indicator of stale access, but it does not automatically mean access is unnecessary. In this scenario, retaining an inactive backup approver was an intentional business-continuity decision that remained subject to least privilege, PIM activation, independent approval, and recurring review.
+
+
