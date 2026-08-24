@@ -111,3 +111,87 @@ Casey Castigan, acting as Payroll Manager, was assigned as the independent revie
 The review requires justification for access decisions and provides Microsoft Entra recommendations based on available identity activity. During testing, the reviewer evaluated both eligible payroll approvers and documented decisions regarding continued access.
 
 This creates a recurring governance control around privileged access rather than relying solely on the original assignment decision.
+
+## Validation & Evidence
+
+The access model was validated through user-level testing, privileged access activation, independent approval, recurring access certification, and audit-log review.
+
+### RBAC and Application Role Separation
+
+The payroll enterprise application uses separate application roles for standard payroll access and privileged payroll approval.
+
+- `SG-Payroll-Users` is assigned the **Payroll User** role.
+- `SG-Payroll-Approvers` is assigned the **Payroll Approver** role.
+
+This separates ordinary payroll access from approval authority and allows permissions to be managed through security groups rather than direct user assignments.
+
+![Payroll application role assignments](screenshots/06-rbac-app-role-assignment.jpeg)
+
+### Just-in-Time Privileged Access
+
+Payroll approvers do not require continuously active privileged membership. Eligible users activate `SG-Payroll-Approvers` membership through PIM when approval access is required.
+
+Bob Barker was used to validate the workflow. His eligible assignment required activation before privileged membership became active.
+
+![Eligible payroll approver assignment](screenshots/06-pim-eligible-payroll-approver.jpeg)
+
+During activation, Bob requested a four-hour access window and provided a business justification for the current payroll cycle.
+
+![PIM JIT activation request](screenshots/07-pim-jit-activation-request.jpeg)
+
+### Independent Approval and Time-Limited Access
+
+Privileged activation required independent authorization. Casey Castigan reviewed Bob's request, the requested duration, and the business justification before approving the activation.
+
+Casey documented a separate approval justification limiting access to the requested payroll cycle and four-hour activation window.
+
+![Independent PIM approval](screenshots/10-pim-approval-authorization.jpeg)
+
+After approval, Bob's `SG-Payroll-Approvers` membership entered the **Activated** state with a defined expiration time.
+
+![Approved temporary privileged access](screenshots/11-pim-approved-active-access.jpeg)
+
+### Business Continuity Without Standing Privilege
+
+Two employees were maintained as eligible payroll approvers:
+
+- Bob Barker, primary payroll approver
+- Anita Adams, backup payroll approver
+
+Both remained eligible through PIM rather than continuously active members of the privileged group.
+
+![Eligible primary and backup payroll approvers](screenshots/12-pim-corrected-eligible-approvers.jpeg)
+
+This design addresses the original single point of failure while avoiding permanent privileged access for either approver.
+
+### Recurring Access Certification
+
+A semi-annual access review was implemented for `SG-Payroll-Approvers`. The review requires continued evaluation of whether privileged payroll eligibility remains justified.
+
+The review was configured with a designated reviewer, required justification, reviewer notifications and reminders, and identity activity as a decision aid.
+
+![Access review governance settings](screenshots/14-access-review-settings.jpeg)
+
+Casey Castigan performed the review as the independent business reviewer. During testing, Microsoft Entra recommended denying Anita's access because of inactivity. Casey retained Anita's eligibility and documented that she remained the designated backup payroll approver required for business continuity.
+
+![Access review business justification](screenshots/18-access-review-approval-justification.jpeg)
+
+The completed review recorded approval decisions for both authorized payroll approvers.
+
+![Completed access review decisions](screenshots/19-access-review-completed-decisions.jpeg)
+
+### Least-Privilege Validation
+
+A standard payroll user was separately validated to confirm that ordinary application access did not provide privileged approval membership.
+
+Edna Edwards remained a member of `SG-Payroll-Users` while `SG-Payroll-Approvers` was absent from her group memberships.
+
+![Standard payroll user least-privilege validation](screenshots/20-least-privilege-payroll-user-membership.jpeg)
+
+### Auditability and Automatic Privilege Removal
+
+Microsoft Entra PIM audit records were reviewed to validate the privileged access lifecycle.
+
+The audit trail recorded Bob's activation request, approval workflow, activation, and subsequent automatic removal from the privileged role after the approved access window ended. Administrative changes to eligible assignments were also recorded.
+
+![PIM resource audit trail](screenshots/21-pim-resource-audit-trail.jpeg)
