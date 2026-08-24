@@ -195,3 +195,56 @@ Microsoft Entra PIM audit records were reviewed to validate the privileged acces
 The audit trail recorded Bob's activation request, approval workflow, activation, and subsequent automatic removal from the privileged role after the approved access window ended. Administrative changes to eligible assignments were also recorded.
 
 ![PIM resource audit trail](screenshots/21-pim-resource-audit-trail.jpeg)
+
+## Security Controls & Design Decisions
+
+The lab was designed around the principle that payroll access should reflect business responsibilities while minimizing unnecessary privilege.
+
+| Risk | Control | Implementation |
+| --- | --- | --- |
+| Single point of failure | Business continuity | Primary and backup payroll approvers were established |
+| Excessive application access | RBAC | Payroll User and Payroll Approver application roles were assigned through separate security groups |
+| Standing privileged access | PIM / JIT access | Payroll approvers were maintained as eligible rather than permanently active members |
+| Unauthorized privilege activation | MFA and business justification | PIM activation requires additional authentication and a documented business reason |
+| Self-approval of privileged access | Separation of duties | Payroll approver activation requires independent approval |
+| Excessive activation duration | Time-bound access | Privileged membership is activated only for a limited period |
+| Stale privileged eligibility | Access reviews | Payroll approver eligibility is reviewed semi-annually |
+| Unaccountable review decisions | Required justification | Reviewers document the business reason for access certification decisions |
+| Inappropriate privilege inheritance | Least privilege | Standard payroll users do not receive membership in the privileged approver group |
+| Untraceable privileged activity | Audit logging | PIM records requests, approvals, activations, assignment changes, and automatic removal |
+
+### Separation of Duties
+
+The design separates three responsibilities:
+
+1. **Payroll usage:** Standard payroll users receive application access through `SG-Payroll-Users`.
+2. **Payroll approval:** Authorized approvers become temporarily active through `SG-Payroll-Approvers`.
+3. **Access governance:** Casey Castigan independently approves privileged activation requests and performs recurring access certification.
+
+This prevents an eligible payroll approver from independently granting and certifying their own privileged access.
+
+### Least Privilege and Just-in-Time Access
+
+Eligibility and active privilege are treated as separate states.
+
+Bob Barker and Anita Adams may have a legitimate business need to perform payroll approval, but that need does not require continuous privileged access. PIM preserves their eligibility while requiring privileged membership to be activated only when needed.
+
+This reduces the organization's standing privilege while preserving operational availability.
+
+### Business Continuity
+
+The original payroll process depended on one employee. The redesigned model establishes a primary and backup approver without permanently granting elevated access to both employees.
+
+Bob Barker serves as the primary approver, while Anita Adams retains eligible backup access. If the primary approver is unavailable, the backup approver can use the same governed PIM activation process.
+
+During access-review testing, Microsoft Entra recommended denying Anita's continued access because of inactivity. The reviewer retained her eligibility with documented justification because inactivity was consistent with her backup role and her continued eligibility mitigated the original business-continuity risk.
+
+This demonstrates that automated identity signals can support access decisions, but business context remains necessary when determining whether access is appropriate.
+
+### Governance Lifecycle
+
+The completed design applies controls throughout the privileged access lifecycle:
+
+`Assign Eligibility → Review Continued Need → Request Activation → Authenticate → Justify → Independently Approve → Activate Temporarily → Audit → Automatically Remove`
+
+This provides controls both over **who is authorized for privileged payroll access** and **when that privilege may actually be exercised**.
