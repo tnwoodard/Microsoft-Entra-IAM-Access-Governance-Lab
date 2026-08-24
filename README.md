@@ -245,7 +245,7 @@ This demonstrates that automated identity signals can support access decisions, 
 
 The completed design applies controls throughout the privileged access lifecycle:
 
-`Assign Eligibility → Review Continued Need → Request Activation → Authenticate → Justify → Independently Approve → Activate Temporarily → Audit → Automatically Remove`
+`Assign Eligibility → Review Continued Need → Request Activation → Justify → Independently Approve → Activate Temporarily → Audit → Automatically Remove`
 
 This provides controls both over **who is authorized for privileged payroll access** and **when that privilege may actually be exercised**.
 
