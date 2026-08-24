@@ -31,3 +31,36 @@ The solution was designed to:
 - Enterprise Applications
 - Security Groups
 - Access Reviews
+
+## Architecture & Identity Design
+
+The payroll access model separates standard application access, privileged payroll approval and governance responsibilities.
+
+### Identity Roles
+
+| Identity | Business Role | Access Responsibility |
+|---|---|---|
+| Bob Barker | Primary Payroll Approver | Eligible for privileged payroll approver access through PIM |
+| Anita Adams | Backup Payroll Approver | Eligible for privileged payroll approver access through PIM |
+| Casey Castigan | Payroll Manager | Reviews and certifies payroll approver access |
+| Edna Edwards | Payroll User | Standard payroll application access |
+| Duane Dumphrey | Standard User | No privileged payroll approval responsibility |
+
+### Access Model
+
+Two security groups were used to separate ordinary payroll access from privileged approval responsibilities:
+
+- **SG-Payroll-Users** provides access to the TNWGroup Payroll System enterprise application.
+- **SG-Payroll-Approvers** represents the privileged payroll approval function and is governed through Privileged Identity Management.
+
+Bob Barker and Anita Adams are configured as **eligible**, rather than permanently active, members of SG-Payroll-Approvers. When payroll approval access is required, an eligible approver activates membership through PIM for a limited period and provides a business justification.
+
+Casey Castigan serves as the independent reviewer for recurring access certification, separating the governance function from the employees receiving privileged access.
+
+### Governance Flow
+
+`Eligible Approver → PIM Activation → Time-Limited Group Membership → Payroll Approval Access → Expiration`
+
+Recurring governance is applied separately:
+
+`SG-Payroll-Approvers → Semi-Annual Access Review → Independent Reviewer → Approve or Deny Continued Eligibility`
